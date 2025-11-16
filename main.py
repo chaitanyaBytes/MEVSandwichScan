@@ -1,19 +1,20 @@
 import asyncio
-import os
-from dotenv import load_dotenv
+import config
 from solana.rpc.async_api import AsyncClient
 
-load_dotenv()
 
 async def main():
-    rpc_url = os.getenv("DEVNET_RPC_URL")
-    if not rpc_url: 
+    rpc_url = config.RPC_ENDPOINT
+    if not rpc_url:
         print("ERROR: RPC URL is missing in the .env file")
         return
 
+    print(rpc_url)
+
     async with AsyncClient(rpc_url) as client:
         res = await client.is_connected()
-        print(res)  # True    
+        print(res)  # True
+
 
 try:
     asyncio.run(main())
