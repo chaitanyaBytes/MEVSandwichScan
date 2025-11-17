@@ -24,12 +24,24 @@ DEFAULT_SLOT_WINDOW = 300
 def get_monitored_pools() -> List[Dict[str, str]]:
     return [
         {
+            "address": config.RAYDIUM_PROGRAM_ID,
+            "name": "Raydium AMM",
+        },
+        {
             "address": config.RAYDIUM_CLMM_PROGRAM_ID,
             "name": "Raydium CLMM",
         },
         {
             "address": config.ORCA_PROGRAM_ID,
             "name": "Orca Whirlpools",
+        },
+        {
+            "address": config.JUPITER_V6_PROGRAM_ID,
+            "name": "Jupiter V6",
+        },
+        {
+            "address": config.METEORA_DLMM_PROGRAM_ID,
+            "name": "Meteora DLMM",
         },
     ]
 
