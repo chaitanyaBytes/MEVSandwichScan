@@ -1,6 +1,15 @@
+"""
+Solana DEX Transaction Scanner
+
+Scans recent Solana blockchain blocks to identify and extract swap transactions
+from configured DEX pools (Raydium and Orca).
+"""
+
 import asyncio
 import json
 from datetime import datetime
+from pathlib import Path
+from typing import List, Dict, Any
 
 import config
 from solana.rpc.async_api import AsyncClient
@@ -8,109 +17,120 @@ from solana.rpc.async_api import AsyncClient
 import utils
 
 
-async def main():
-    rpc_url = config.RPC_ENDPOINT
-    if not rpc_url:
-        print("ERROR: RPC URL is missing in the .env file")
+OUTPUT_FILENAME = "transactions.json"
+DEFAULT_SLOT_WINDOW = 3
+
+
+def get_monitored_pools() -> List[Dict[str, str]]:
+    return [
+        {
+            "address": config.RAYDIUM_CLMM_PROGRAM_ID,
+            "name": "Raydium CLMM",
+        },
+        {
+            "address": config.ORCA_PROGRAM_ID,
+            "name": "Orca Whirlpools",
+        },
+    ]
+
+
+def calculate_pool_statistics(
+    transactions: List[Dict[str, Any]], pool_configurations: List[Dict[str, str]]
+) -> Dict[str, int]:
+    pool_transaction_counts = {}
+
+    for pool_config in pool_configurations:
+        pool_name = pool_config["name"]
+        transaction_count = sum(
+            1 for tx in transactions if tx["pool_name"] == pool_name
+        )
+        pool_transaction_counts[pool_name] = transaction_count
+
+    return pool_transaction_counts
+
+
+def print_scan_results(
+    transactions: List[Dict[str, Any]], pool_configurations: List[Dict[str, str]]
+) -> None:
+    print("\n" + "=" * 70)
+    print("SCAN RESULTS")
+    print("=" * 70)
+
+    if not transactions:
+        print("\nNo swap transactions found in the scanned blocks.")
         return
 
-    async with AsyncClient(rpc_url) as client:
-        res = await client.is_connected()
-        print(f"Connected to RPC: {res}")
+    pool_statistics = calculate_pool_statistics(transactions, pool_configurations)
 
-        # Pools to fetch txns from
-        pools = [
-            {
-                "address": config.RAYDIUM_CLMM_PROGRAM_ID,
-                "name": "Raydium CLMM",
-            },
-            {
-                "address": config.ORCA_PROGRAM_ID,
-                "name": "Orca Whirlpools",
-            },
-        ]
+    print(f"\nTotal transactions found: {len(transactions)}")
+    print("\nBreakdown by pool:")
 
-        print(f"Starting parallel fetch for {len(pools)} pools...")
-        for pool in pools:
-            print(f"- {pool['name']}")
-        print()
+    for pool_name, count in pool_statistics.items():
+        percentage = (count / len(transactions) * 100) if transactions else 0
+        print(f"  - {pool_name}: {count} transactions ({percentage:.1f}%)")
 
-        tasks = [
-            utils.fetch_and_process_pool(client, pool["address"], pool["name"], limit=2)
-            for pool in pools
-        ]
 
-        results = await asyncio.gather(*tasks, return_exceptions=True)
+def save_transactions_to_file(
+    transactions: List[Dict[str, Any]], output_filepath: str = OUTPUT_FILENAME
+) -> None:
+    output_data = {
+        "scan_timestamp": datetime.now().isoformat(),
+        "total_count": len(transactions),
+        "transactions": transactions,
+    }
 
-        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+    output_path = Path(output_filepath)
 
-        print(f"\n{'='*60}")
-        print(f"Saving Results")
-        print(f"{'='*60}")
+    with output_path.open("w", encoding="utf-8") as output_file:
+        json.dump(output_data, output_file, indent=2, default=str)
 
-        for i, (pool, result) in enumerate(zip(pools, results)):
-            if isinstance(result, Exception):
-                print(f"\nError processing {pool['name']}: {result}")
-                continue
+    print(f"\nResults saved to: {output_path.absolute()}")
 
-            signatures_data, transactions_data = result
 
-            if not signatures_data:
-                print(f"\nNo data for {pool['name']}")
-                continue
+async def run_blockchain_scanner(slot_window: int = DEFAULT_SLOT_WINDOW) -> None:
+    rpc_endpoint = config.RPC_ENDPOINT
+    if not rpc_endpoint:
+        print("ERROR: RPC_ENDPOINT not configured. Please check your .env file.")
+        return
 
-            # Save signatures
-            sig_filename = f"signatures_{pool['name'].replace(' ', '_')}.json"
-            signatures_output = {
-                "pool_address": pool["address"],
-                "pool_name": pool["name"],
-                "fetched_at": datetime.now().isoformat(),
-                "total_signatures": len(signatures_data),
-                "successful_signatures": len(signatures_data),
-                "signatures": signatures_data,
-            }
+    print("=" * 70)
+    print("SOLANA DEX TRANSACTION SCANNER")
+    print("=" * 70)
 
-            with open(sig_filename, "w") as f:
-                json.dump(signatures_output, f, indent=2, default=str)
+    async with AsyncClient(rpc_endpoint) as rpc_client:
+        is_connected = await rpc_client.is_connected()
 
-            print(f"\n{pool['name']}:")
-            print(f" Signatures: {len(signatures_data)} saved to {sig_filename}")
+        if not is_connected:
+            print("ERROR: Failed to connect to Solana RPC endpoint")
+            return
 
-            # Save transactions
-            if transactions_data:
-                tx_filename = f"transactions_{pool['name'].replace(' ', '_')}.json"
-                transactions_output = {
-                    "pool_address": pool["address"],
-                    "pool_name": pool["name"],
-                    "fetched_at": datetime.now().isoformat(),
-                    "total_transactions": len(transactions_data),
-                    "transactions": transactions_data,
-                }
+        print(f"\nConnected to RPC: {rpc_endpoint}")
 
-                with open(tx_filename, "w") as f:
-                    json.dump(transactions_output, f, indent=2, default=str)
+        monitored_pools = get_monitored_pools()
 
-                print(f" Transactions: {len(transactions_data)} saved to {tx_filename}")
+        print(f"\nMonitoring {len(monitored_pools)} DEX pools:")
+        for pool in monitored_pools:
+            print(f"  - {pool['name']}")
 
-                # Print summary stats
-                dex_transactions = [tx for tx in transactions_data if tx.get("dex")]
-                print(f"   DEX transactions: {len(dex_transactions)}")
-                if dex_transactions:
-                    raydium_count = len(
-                        [tx for tx in dex_transactions if tx.get("dex") == "Raydium"]
-                    )
-                    orca_count = len(
-                        [tx for tx in dex_transactions if tx.get("dex") == "Orca"]
-                    )
-                    print(f" - Raydium: {raydium_count}")
-                    print(f" - Orca: {orca_count}")
+        # Scan blockchain for swap transactions
+        discovered_transactions = await utils.parse_blocks_for_txns(
+            rpc_client, monitored_pools, slot_window=slot_window
+        )
 
-        print(f"\n{'='*60}")
-        print(f"All done!")
-        print(f"{'='*60}")
+        print_scan_results(discovered_transactions, monitored_pools)
+
+        if discovered_transactions:
+            save_transactions_to_file(discovered_transactions)
+
+        print("\n" + "=" * 70)
+        print("Scan complete")
+        print("=" * 70 + "\n")
 
 
 try:
-    asyncio.run(main())
-except Exception as e:
-    print(f"ERROR: {e}")
+    asyncio.run(run_blockchain_scanner())
+except KeyboardInterrupt:
+    print("\n\nScan interrupted by user")
+except Exception as error:
+    print(f"\nERROR: {error}")
+    raise

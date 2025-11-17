@@ -1,0 +1,90 @@
+{
+  "scan_timestamp": "2025-11-17T23:27:06.452543",
+  "total_count": 7,
+  "transactions": [
+    {
+      "signature": "4vkancJ73v56gqTJuRxCE9SdgfjunJ1pscVSmWBMbH9Y47JJSqRu1Y44NdXzt8zxt1pSSzDDPnWfDv8ax9TQWum9",
+      "slot": 380723988,
+      "signer": "9iBv3p4PoVq9z5sfew8X6MshESjbz4eKbTKmZwde9wem",
+      "pool_name": "Raydium CLMM",
+      "token_in": "BjcRmwm8e25RgjkyaFE56fc7bxRgGPw96JUkXRJFEroT",
+      "amount_in": 5817.335660266981,
+      "user_source_ata": "CoXLZdMFhVzMBnQCxCAwYGu3w6JN84FQHxTFF82HBwv3",
+      "token_out": "XsDoVfqeBukxuZHWhdvWHBhgEHjGNst4MLodqsJHzoB",
+      "amount_out": 0.023993290000000167,
+      "user_destination_ata": "5Zof5MRTHWEV7Fx2TkJncfBHt6DmxLyNfvUf1QvdzUjY"
+    },
+    {
+      "signature": "mEyYvKKAKR2h9ZZYaQQmTtbs2HZjakd4bGmX9UPL1TRuxAiTPrwQf6WppycfcyijVE6dsQj2zjdgqcbwmTSVg2i",
+      "slot": 380723988,
+      "signer": "MfDuWeqSHEqTFVYZ7LoexgAK9dxk7cy4DFJWjWMGVWa",
+      "pool_name": "Orca Whirlpools",
+      "token_in": "So11111111111111111111111111111111111111112",
+      "amount_in": 0.520858705000137,
+      "user_source_ata": "CTyFguG69kwYrzk24P3UuBvY1rR5atu9kf2S6XEwAU8X",
+      "token_out": "EKpQGSJtjMFqKZ9KQanSqYXRcF8fBopzLHYxdM65zcjm",
+      "amount_out": 173.42024599999422,
+      "user_destination_ata": "Fdo47EPoxbFY8xCRVU7VTKWCdhTsXGt91qtKSVX7y1SR"
+    },
+    {
+      "signature": "3CnVKQDz5GZobegrVXqjqfbu3RzdVuMzBQGkkfZN8x9AxDg8hXWiK4Q5pKzUrEZGBeqRfq6vNJMVCXkiwjw2vg5D",
+      "slot": 380723988,
+      "signer": "BMnT51N4iSNhWU5PyFFgWwFvN1jgaiiDr9ZHgnkm3iLJ",
+      "pool_name": "Raydium CLMM",
+      "token_in": "So11111111111111111111111111111111111111112",
+      "amount_in": 3.4335579049984517,
+      "user_source_ata": "BiESLRE2R32eD2r89v1HQrXAN5gCFNfgr6G1KGiDDX46",
+      "token_out": "HNg5PYJmtqcmzXrv6S9zP1CDKk5BgDuyFBxbvNApump",
+      "amount_out": 2845.4045469999546,
+      "user_destination_ata": "J9h8FgtdMwNgASzb8D6z1bNiTTrQG3UGucdu5UWEzDLq"
+    },
+    {
+      "signature": "4UuniV2J1CWpGHhb1GC53sJ2EYs49LuPTVzLiocfiiFnBkDHRdQJ34oarRCTZSmbNGTRXqV1eczBuLxPTpQzzRh2",
+      "slot": 380723988,
+      "signer": "MfDuWeqSHEqTFVYZ7LoexgAK9dxk7cy4DFJWjWMGVWa",
+      "pool_name": "Orca Whirlpools",
+      "token_in": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+      "amount_in": 458.82837300002575,
+      "user_source_ata": "8VYWdU14V78rcDepwmNt54bb1aam5qVUMUpEtW8oCn1E",
+      "token_out": "cbbtcf3aa214zXHbiAZQwf4122FBYbraNdFqgw4iMij",
+      "amount_out": 0.004950630000000622,
+      "user_destination_ata": "FjCi6obsKMFUPRGWimrFzfhRzoQGTqzAL1Z44gZNHfoo"
+    },
+    {
+      "signature": "5V1mezp8AC9hmtrnLKfoY8k1JSEFp598HTkxDfJmG971Xqxjwr1GPiJpHSzyRNxYwzb5wfWq8C9TJvm8DpNSo5Hz",
+      "slot": 380723987,
+      "signer": "MfDuWeqSHEqTFVYZ7LoexgAK9dxk7cy4DFJWjWMGVWa",
+      "pool_name": "Orca Whirlpools",
+      "token_in": "So11111111111111111111111111111111111111112",
+      "amount_in": 0.4091690280001785,
+      "user_source_ata": "CTyFguG69kwYrzk24P3UuBvY1rR5atu9kf2S6XEwAU8X",
+      "token_out": "EKpQGSJtjMFqKZ9KQanSqYXRcF8fBopzLHYxdM65zcjm",
+      "amount_out": 136.2302020000061,
+      "user_destination_ata": "Fdo47EPoxbFY8xCRVU7VTKWCdhTsXGt91qtKSVX7y1SR"
+    },
+    {
+      "signature": "3WSKTxgLgSwDjBZNovBrxusKcFcphhfPS36WUbCVRFhUEDYDLfDaB3hqBQbPUmzY6SQuibdNa9iSCUqXutob3Aye",
+      "slot": 380723986,
+      "signer": "BMnT51N4iSNhWU5PyFFgWwFvN1jgaiiDr9ZHgnkm3iLJ",
+      "pool_name": "Orca Whirlpools",
+      "token_in": "So11111111111111111111111111111111111111112",
+      "amount_in": 0.5544488359992101,
+      "user_source_ata": "BiESLRE2R32eD2r89v1HQrXAN5gCFNfgr6G1KGiDDX46",
+      "token_out": "EKpQGSJtjMFqKZ9KQanSqYXRcF8fBopzLHYxdM65zcjm",
+      "amount_out": 184.62769900006242,
+      "user_destination_ata": "9pgQ1RdSafzsrSqxfxFvTezevFoXwALpLNoZchytXq1V"
+    },
+    {
+      "signature": "3RoppGSrweQWvadKsU9R6EDzeWip46W789iXArKNvetnhVFQAfRGU8p7rVQQvzzsuT2ip9ydRhumL9Spacn2eVkT",
+      "slot": 380723986,
+      "signer": "MfDuWeqSHEqTFVYZ7LoexgAK9dxk7cy4DFJWjWMGVWa",
+      "pool_name": "Orca Whirlpools",
+      "token_in": "So11111111111111111111111111111111111111112",
+      "amount_in": 0.25177312800042273,
+      "user_source_ata": "CTyFguG69kwYrzk24P3UuBvY1rR5atu9kf2S6XEwAU8X",
+      "token_out": "EKpQGSJtjMFqKZ9KQanSqYXRcF8fBopzLHYxdM65zcjm",
+      "amount_out": 83.8086749999784,
+      "user_destination_ata": "Fdo47EPoxbFY8xCRVU7VTKWCdhTsXGt91qtKSVX7y1SR"
+    }
+  ]
+}
