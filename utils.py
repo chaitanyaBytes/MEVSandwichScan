@@ -4,9 +4,10 @@ from solders.signature import Signature
 from solders.pubkey import Pubkey
 
 
-def extract_transaction_data(transaction, signature_str):
+def extract_transaction_data(pool_name, transaction, signature_str):
     try:
         tx_data = {
+            "pool_name": pool_name,
             "signature": str(signature_str),
             "slot": transaction.slot if hasattr(transaction, "slot") else None,
             "block_time": (
@@ -18,13 +19,19 @@ def extract_transaction_data(transaction, signature_str):
                 else 0
             ),
         }
+        tx_data["signer_address"] = get_signer_address(transaction)
+
+        if tx_data["block_time"]:
+            tx_data["block_time_readable"] = datetime.fromtimestamp(
+                tx_data["block_time"]
+            ).strftime("%Y-%m-%d %H:%M:%S UTC")
 
         return tx_data
     except Exception as e:
         return None
 
 
-async def fetch_transaction(client, signature_str):
+async def fetch_transaction(client, pool_name, signature_str):
     try:
         sig = Signature.from_string(signature_str)
         tx_response = await client.get_transaction(
@@ -34,7 +41,7 @@ async def fetch_transaction(client, signature_str):
         )
 
         if tx_response.value:
-            return extract_transaction_data(tx_response.value, signature_str)
+            return extract_transaction_data(pool_name, tx_response.value, signature_str)
         return None
     except Exception as e:
         return None
@@ -82,7 +89,8 @@ async def fetch_and_process_pool(client, pool_address, pool_name, limit=100):
     print(f"Found {len(signatures_data)} successful signatures in {pool_name}")
 
     tasks = [
-        fetch_transaction(client, sig_dict["signature"]) for sig_dict in signatures_data
+        fetch_transaction(client, pool_name, sig_dict["signature"])
+        for sig_dict in signatures_data
     ]
 
     transactions_data = []
@@ -109,3 +117,37 @@ async def fetch_and_process_pool(client, pool_address, pool_name, limit=100):
     print(f"Successfully fetched {len(transactions_data)} transactions")
 
     return signatures_data, transactions_data
+
+
+def get_signer_address(transaction):
+    try:
+        signer_address = None
+        if (
+            hasattr(transaction, "transaction")
+            and hasattr(transaction.transaction, "transaction")
+            and hasattr(transaction.transaction.transaction, "message")
+        ):
+
+            message = transaction.transaction.transaction.message
+            account_keys = None
+            if hasattr(message, "account_keys") and len(message.account_keys) > 0:
+                account_keys = message.account_keys
+            elif (
+                hasattr(message, "static_account_keys")
+                and len(message.static_account_keys) > 0
+            ):
+                account_keys = message.static_account_keys
+
+            if account_keys:
+                first_account = account_keys[0]
+                if isinstance(first_account, str):
+                    signer_address = first_account
+                elif hasattr(first_account, "pubkey"):
+                    signer_address = str(first_account.pubkey)
+                elif isinstance(first_account, dict) and "pubkey" in first_account:
+                    signer_address = str(first_account["pubkey"])
+                else:
+                    signer_address = str(first_account)
+            return signer_address
+    except Exception as e:
+        return None

@@ -1,0 +1,18 @@
+{
+  "pool_address": "whirLbMiicVdio4qvUfM5KAg6Ct8VwpYzGff3uctyCc",
+  "pool_name": "Orca Whirlpools",
+  "fetched_at": "2025-11-17T12:23:58.815289",
+  "total_signatures": 1,
+  "successful_signatures": 1,
+  "signatures": [
+    {
+      "signature": "5n5YDD3qdH4LQ3Ygjps1FCLDgxnXbrsdTNEvBPAR2eoSX9a6LYALZESAtACVz14KtNWHZM1AKbz4kFCxRS6gAqJo",
+      "slot": 380623917,
+      "err": null,
+      "memo": null,
+      "block_time": 1763362424,
+      "confirmation_status": "TransactionConfirmationStatus.Finalized",
+      "block_time_readable": "2025-11-17 12:23:44 UTC"
+    }
+  ]
+}

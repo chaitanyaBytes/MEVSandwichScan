@@ -36,9 +36,7 @@ async def main():
         print()
 
         tasks = [
-            utils.fetch_and_process_pool(
-                client, pool["address"], pool["name"], limit=10
-            )
+            utils.fetch_and_process_pool(client, pool["address"], pool["name"], limit=2)
             for pool in pools
         ]
 
@@ -62,7 +60,7 @@ async def main():
                 continue
 
             # Save signatures
-            sig_filename = f"signatures_{pool['address'][:8]}_{timestamp}.json"
+            sig_filename = f"signatures_{pool['name'].replace(' ', '_')}.json"
             signatures_output = {
                 "pool_address": pool["address"],
                 "pool_name": pool["name"],
@@ -80,7 +78,7 @@ async def main():
 
             # Save transactions
             if transactions_data:
-                tx_filename = f"transactions_{pool['address'][:8]}_{timestamp}.json"
+                tx_filename = f"transactions_{pool['name'].replace(' ', '_')}.json"
                 transactions_output = {
                     "pool_address": pool["address"],
                     "pool_name": pool["name"],
