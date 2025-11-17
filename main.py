@@ -18,7 +18,7 @@ import utils
 
 
 OUTPUT_FILENAME = "transactions.json"
-DEFAULT_SLOT_WINDOW = 3
+DEFAULT_SLOT_WINDOW = 300
 
 
 def get_monitored_pools() -> List[Dict[str, str]]:

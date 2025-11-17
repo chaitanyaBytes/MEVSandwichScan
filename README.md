@@ -1,11 +1,11 @@
 # Solana DEX Transaction Scanner
 
-A Python tool for scanning Solana blockchain blocks to identify and extract DEX swap transactions from Raydium and Orca pools.
+A Python tool for scanning Solana blockchain blocks to identify and extract DEX swap transactions from Raydium, Orca, and Meteora pools.
 
 ## Features
 
 - Scans recent Solana blocks for DEX transactions
-- Supports Raydium CLMM and Orca Whirlpools
+- Supports Raydium CLMM, Orca Whirlpools, and Meteora DAMM v2
 - Extracts detailed swap information including tokens and amounts
 - Clean, functional code with descriptive naming
 - Saves results in structured JSON format
@@ -42,19 +42,22 @@ MEVSandwichScan/
 ## Installation
 
 1. **Set up virtual environment**
+
    ```bash
    python -m venv venv
    source venv/bin/activate  # On macOS/Linux
    ```
 
 2. **Install dependencies**
+
    ```bash
    pip install solana solders python-dotenv
    ```
 
 3. **Configure environment**
-   
+
    Create a `.env` file with your Solana RPC endpoint:
+
    ```
    RPC_ENDPOINT=https://api.mainnet-beta.solana.com
    ```
@@ -107,7 +110,7 @@ Results are saved to `transactions.json`:
 - `signature` - Unique transaction signature
 - `slot` - Block slot number where transaction occurred
 - `signer` - Transaction signer (fee payer) wallet address
-- `pool_name` - DEX pool name (e.g., "Raydium CLMM", "Orca Whirlpools")
+- `pool_name` - DEX pool name (e.g., "Raydium CLMM", "Orca Whirlpools", "Meteora DAMM")
 - `token_in` - Mint address of the token sent/sold
 - `amount_in` - Amount of token sent (in UI units)
 - `user_source_ata` - User's Associated Token Account for the source token
@@ -126,6 +129,7 @@ KNOWN_DEX_PROGRAMS = {
     RAYDIUM_PROGRAM_ID: "Raydium CLMM",
     RAYDIUM_CLMM_PROGRAM_ID: "Raydium CLMM",
     ORCA_PROGRAM_ID: "Orca Whirlpools",
+    METEORA_DAMM_PROGRAM_ID: "Meteora DAMM",
     YOUR_PROGRAM_ID: "Your DEX Name",  # Add here
 }
 ```
@@ -160,9 +164,10 @@ SOLANA DEX TRANSACTION SCANNER
 
 Connected to RPC: https://api.mainnet-beta.solana.com
 
-Monitoring 2 DEX pools:
+Monitoring 3 DEX pools:
   - Raydium CLMM
   - Orca Whirlpools
+  - Meteora DAMM
 
 Scanning 100 recent slots starting from slot 380716048
 Successfully processed 100 blocks
