@@ -1,0 +1,49 @@
+{
+  "transactions": [
+    {
+      "signature": "SIM_FRONT",
+      "slot": 10000,
+      "tx_index": 1,
+      "signer": "BOT_WALLET_ABC",
+      "swap_program": "Raydium CLMM",
+      "pool_name": "SIMULATED_POOL",
+      "token_in": "So11111111111111111111111111111111111111112",
+      "token_out": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+      "amount_in": 20,
+      "amount_out": 38461.5384615385,
+      "priority_fee": 0,
+      "tip_account": null,
+      "tip_amount": 0
+    },
+    {
+      "signature": "SIM_VICTIM",
+      "slot": 10001,
+      "tx_index": 1,
+      "signer": "VICTIM_WALLET_XYZ",
+      "swap_program": "Raydium CLMM",
+      "pool_name": "SIMULATED_POOL",
+      "token_in": "So11111111111111111111111111111111111111112",
+      "token_out": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+      "amount_in": 30,
+      "amount_out": 52447.55244755244,
+      "priority_fee": 0,
+      "tip_account": null,
+      "tip_amount": 0
+    },
+    {
+      "signature": "SIM_BACK",
+      "slot": 10004,
+      "tx_index": 1,
+      "signer": "BOT_WALLET_ABC",
+      "swap_program": "Raydium CLMM",
+      "pool_name": "SIMULATED_POOL",
+      "token_in": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+      "token_out": "So11111111111111111111111111111111111111112",
+      "amount_in": 38461.5384615385,
+      "amount_out": 22.32472324723244,
+      "priority_fee": 0,
+      "tip_account": null,
+      "tip_amount": 0
+    }
+  ]
+}

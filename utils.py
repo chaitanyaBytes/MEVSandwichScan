@@ -272,10 +272,7 @@ def calculate_token_balance_changes(
 
 
 def extract_priority_fee_and_tip(transaction) -> Dict[str, Any]:
-    """
-    Extract priority fee (compute unit price) and tip account information.
-    Returns: {priority_fee, tip_account, tip_amount}
-    """
+
     priority_fee = None
     tip_account = None
     tip_amount = 0

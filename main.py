@@ -19,8 +19,10 @@ import utils
 import profit_analysis
 
 
-OUTPUT_FILENAME = "transactions.json"
-DEFAULT_SLOT_WINDOW = 300
+DEFAULT_SLOT_WINDOW = 10
+RESULTS_DIR = Path("results")
+RESULTS_DIR.mkdir(exist_ok=True)
+OUTPUT_FILENAME = RESULTS_DIR / "transactions.json"
 
 
 def get_monitored_pools() -> List[Dict[str, str]]:
@@ -85,7 +87,7 @@ def print_scan_results(
 
 
 def save_transactions_to_file(
-    transactions: List[Dict[str, Any]], output_filepath: str = OUTPUT_FILENAME
+    transactions: List[Dict[str, Any]], output_filepath=OUTPUT_FILENAME
 ) -> None:
     output_data = {
         "scan_timestamp": datetime.now().isoformat(),
@@ -144,7 +146,7 @@ async def run_blockchain_scanner(slot_window: int = DEFAULT_SLOT_WINDOW) -> None
             try:
                 sandwich_detect.run_detection(
                     transactions_file=OUTPUT_FILENAME,
-                    output_file="sandwich_attacks.json",
+                    output_file=RESULTS_DIR / "sandwich_attacks.json",
                 )
             except Exception as e:
                 print(f"Error during sandwich detection: {e}")
@@ -154,9 +156,9 @@ async def run_blockchain_scanner(slot_window: int = DEFAULT_SLOT_WINDOW) -> None
                 print("=" * 70)
                 try:
                     profit_analysis.run_profit_analysis(
-                        Path("sandwich_attacks.json"),
-                        Path("profit_analysis.json"),
-                        Path("pnl_report_per_bot.json"),
+                        RESULTS_DIR / "sandwich_attacks.json",
+                        RESULTS_DIR / "profit_analysis.json",
+                        RESULTS_DIR / "pnl_report_per_bot.json",
                     )
                 except Exception as e:
                     print(f"Error during profit analysis: {e}")

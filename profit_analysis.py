@@ -6,8 +6,10 @@ from typing import Any, Dict, List, Tuple
 from price_fetcher import fetch_prices_usd
 
 SOL_MINT = "So11111111111111111111111111111111111111112"
-DEFAULT_ANALYSIS_PATH = Path("profit_analysis.json")
-DEFAULT_BOT_PNL_PATH = Path("pnl_report_per_bot.json")
+RESULTS_DIR = Path("results")
+RESULTS_DIR.mkdir(exist_ok=True)
+DEFAULT_ANALYSIS_PATH = RESULTS_DIR / "profit_analysis.json"
+DEFAULT_BOT_PNL_PATH = RESULTS_DIR / "pnl_report_per_bot.json"
 
 
 def load_sandwiches(path: Path) -> List[Dict[str, Any]]:
@@ -114,33 +116,46 @@ def summarize_results(
 
 
 def print_summary(summary: Dict[str, Any]) -> None:
-    print(f"Sandwiches analyzed: {summary['total_sandwiches']}")
-    print(
-        f"Profitable: {summary['profitable_count']} | Losing: {summary['loss_count']}"
+    print("\n" + "=" * 70)
+    print("PROFIT ANALYSIS SUMMARY")
+    print("=" * 70)
+
+    print("\n OVERVIEW")
+    print("-" * 70)
+    print(f"  Total Sandwiches Analyzed: {summary['total_sandwiches']}")
+    success_rate = (
+        (summary["profitable_count"] / summary["total_sandwiches"] * 100)
+        if summary["total_sandwiches"] > 0
+        else 0
     )
-    print(
-        f"Total profit: {summary['total_profit_usd']:.4f} USD | "
-        f"{summary['total_profit_sol']:.4f} SOL"
-    )
-    print(
-        f"Best sandwich: {summary['max_profit_usd']:.4f} USD | "
-        f"{summary['max_profit_sol']:.4f} SOL"
-    )
+    print(f"   Profitable: {summary['profitable_count']} ({success_rate:.1f}%)")
+    print(f"   Losing:     {summary['loss_count']}")
+
+    print("\n PROFIT METRICS")
+    print("-" * 70)
+    print(f"  Total Profit:     ${summary['total_profit_usd']:,.2f} USD")
+    print(f"                    {summary['total_profit_sol']:.6f} SOL")
+    print(f"  Best Sandwich:    ${summary['max_profit_usd']:,.2f} USD")
+    print(f"                    {summary['max_profit_sol']:.6f} SOL")
 
     if summary["top_bots"]:
-        print("Top bots by USD profit:")
-        for bot in summary["top_bots"]:
+        print("\n TOP BOTS BY PROFIT")
+        print("-" * 70)
+        for i, bot in enumerate(summary["top_bots"], 1):
+            print(f"  #{i} {bot['bot'][:20]}...")
             print(
-                f"  {bot['bot'][:16]}... | {bot['profit_usd']:.4f} USD "
-                f"({bot['profit_sol']:.4f} SOL) across {bot['sandwich_count']} sandwiches"
+                f"     Profit: ${bot['profit_usd']:,.2f} USD ({bot['profit_sol']:.6f} SOL)"
             )
+            print(f"     Sandwiches: {bot['sandwich_count']}")
+
+    print("\n" + "=" * 70)
 
 
 def save_results(path: Path, payload: Any) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     with path.open("w", encoding="utf-8") as f:
         json.dump(payload, f, indent=2)
-    print(f"Saved {path}")
+    print(f"  Saved: {path.name}")
 
 
 def run_profit_analysis(
@@ -148,16 +163,19 @@ def run_profit_analysis(
     output_analysis: Path = DEFAULT_ANALYSIS_PATH,
     output_bot: Path = DEFAULT_BOT_PNL_PATH,
 ):
-    print("=" * 70)
+    print("\n" + "=" * 70)
     print("PROFIT ANALYSIS")
     print("=" * 70)
-    print(f"Loading sandwiches from {sandwich_file}")
+    print(f"\n Loading sandwiches from: {sandwich_file}")
 
     sandwiches = load_sandwiches(sandwich_file)
     if not sandwiches:
-        print("No sandwiches found.")
+        print(" No sandwiches found.")
         return
 
+    print(f" Loaded {len(sandwiches)} sandwiches")
+
+    print("\n Fetching token prices from Jupiter...")
     mints = set()
     for s in sandwiches:
         for tx_key in ("front_run", "back_run", "victim"):
@@ -169,32 +187,41 @@ def run_profit_analysis(
     prices_usd = fetch_prices_usd(list(mints))
     sol_price = prices_usd.get(SOL_MINT, 0.0)
     if not sol_price:
-        print("[WARN] SOL price missing; SOL profits stay zero.")
+        print("  [WARN] SOL price missing; SOL profits will be zero.")
+    else:
+        print(f" Fetched {len(prices_usd)} token prices")
+        print(f"   SOL price: ${sol_price:.2f} USD")
 
-    print(
-        f"Fetched {len(prices_usd)} prices from Jupiter. SOL price = {sol_price:.4f} USD."
-    )
-
+    print("\n Computing profits for each sandwich...")
     results: List[Dict[str, Any]] = []
+    skipped = 0
 
     for idx, s in enumerate(sandwiches, start=1):
         try:
             results.append(compute_profit(s, prices_usd, sol_price, idx))
         except Exception as exc:
-            print(f"[WARN] Skipped sandwich #{idx}: {exc}")
+            skipped += 1
+            if skipped <= 3:  # Only show first 3 warnings
+                print(f"  Skipped sandwich #{idx}: {exc}")
+
+    if skipped > 3:
+        print(f"  ... and {skipped - 3} more skipped")
 
     results.sort(key=lambda r: r["profit_usd"], reverse=True)
+    print(f" Processed {len(results)} sandwiches successfully")
 
     summary = summarize_results(results, sol_price)
     print_summary(summary)
 
+    print("\n Saving results...")
     save_results(output_analysis, results)
     bot_summary = {row["bot"]: row for row in summary["top_bots"]}
     save_results(output_bot, bot_summary)
+    print(" Analysis complete!\n")
 
 
 def main():
-    sandwich_file = Path("sandwich_attacks.json").expanduser()
+    sandwich_file = (RESULTS_DIR / "sandwich_attacks.json").expanduser()
     analysis_output = DEFAULT_ANALYSIS_PATH.expanduser()
     pnl_output = DEFAULT_BOT_PNL_PATH.expanduser()
     try:

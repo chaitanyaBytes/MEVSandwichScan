@@ -5,7 +5,10 @@ from typing import List, Dict, Any
 
 MAX_SLOT_GAP = 10
 MIN_SLOT_GAP = 1
-DEFAULT_OUTPUT_FILE = "sandwich_attacks.json"
+RESULTS_DIR = Path("results")
+RESULTS_DIR.mkdir(exist_ok=True)
+DEFAULT_TRANSACTIONS_FILE = RESULTS_DIR / "transactions.json"
+DEFAULT_OUTPUT_FILE = RESULTS_DIR / "sandwich_attacks.json"
 
 
 def is_opposite_direction(a, b):
@@ -89,7 +92,7 @@ def detect_sandwiches(transactions: List[Dict[str, Any]]) -> Dict[str, Any]:
     return sandwiches
 
 
-def load_transactions(filepath: str = "transactions.json") -> List[Dict[str, Any]]:
+def load_transactions(filepath=DEFAULT_TRANSACTIONS_FILE) -> List[Dict[str, Any]]:
     path = Path(filepath)
     if not path.exists():
         raise FileNotFoundError(f"Transactions file not found: {filepath}")
@@ -127,8 +130,8 @@ def save_sandwich_results(
 
 
 def run_detection(
-    transactions_file: str = "transactions.json",
-    output_file: str = DEFAULT_OUTPUT_FILE,
+    transactions_file=DEFAULT_TRANSACTIONS_FILE,
+    output_file=DEFAULT_OUTPUT_FILE,
     max_slot_gap: int = MAX_SLOT_GAP,
     min_slot_gap: int = MIN_SLOT_GAP,
 ) -> None:
@@ -162,7 +165,7 @@ def run_detection(
 if __name__ == "__main__":
     import sys
 
-    transactions_file = sys.argv[1] if len(sys.argv) > 1 else "transactions.json"
+    transactions_file = sys.argv[1] if len(sys.argv) > 1 else DEFAULT_TRANSACTIONS_FILE
     output_file = sys.argv[2] if len(sys.argv) > 2 else DEFAULT_OUTPUT_FILE
 
     run_detection(transactions_file, output_file)

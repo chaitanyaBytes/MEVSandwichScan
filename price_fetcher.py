@@ -20,7 +20,6 @@ def _chunk(items: Iterable[str], size: int) -> Iterable[List[str]]:
 
 
 def fetch_prices_usd(mints: List[str]) -> Dict[str, float]:
-    """Return {mint: price_usd} using Jupiter lite API."""
     if not mints:
         return {}
 

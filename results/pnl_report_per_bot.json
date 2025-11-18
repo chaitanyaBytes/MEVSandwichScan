@@ -1,0 +1,32 @@
+{
+  "Gwwnuytsvw7DC1Wea2QF5TMSS9Az81zDfUN1YwtiDLRx": {
+    "bot": "Gwwnuytsvw7DC1Wea2QF5TMSS9Az81zDfUN1YwtiDLRx",
+    "sandwich_count": 14,
+    "profit_usd": 1063.2322966689576,
+    "profit_sol": 7.531412671686251
+  },
+  "AE861PyrYJXm2TuxiMc8Ecwo4YYgAHfcYum3GWpSRFe3": {
+    "bot": "AE861PyrYJXm2TuxiMc8Ecwo4YYgAHfcYum3GWpSRFe3",
+    "sandwich_count": 7,
+    "profit_usd": 61.60130607954646,
+    "profit_sol": 0.4363532396950591
+  },
+  "Bj1R5CBrhdD8Wn7irvnAFfkwHJsVENscBkhaJ14jveZo": {
+    "bot": "Bj1R5CBrhdD8Wn7irvnAFfkwHJsVENscBkhaJ14jveZo",
+    "sandwich_count": 1,
+    "profit_usd": 30.596508963890425,
+    "profit_sol": 0.2167305639999313
+  },
+  "4SqKdf3VSH1SHTckCFLp45HgGK3XRxTn1EzuUTzrFzwr": {
+    "bot": "4SqKdf3VSH1SHTckCFLp45HgGK3XRxTn1EzuUTzrFzwr",
+    "sandwich_count": 1,
+    "profit_usd": 4.708604550911328,
+    "profit_sol": 0.033353430000005346
+  },
+  "AaaA2FSj1FyMEPhdpoF7PJrjsovB6yVv7YZFLn6MSiEQ": {
+    "bot": "AaaA2FSj1FyMEPhdpoF7PJrjsovB6yVv7YZFLn6MSiEQ",
+    "sandwich_count": 7,
+    "profit_usd": 2.840017094059036,
+    "profit_sol": 0.0201172789775228
+  }
+}
