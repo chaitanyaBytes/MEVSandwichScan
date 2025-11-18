@@ -13,8 +13,10 @@ from typing import List, Dict, Any
 
 import config
 from solana.rpc.async_api import AsyncClient
+import sandwich_detect
 
 import utils
+import profit_analysis
 
 
 OUTPUT_FILENAME = "transactions.json"
@@ -133,6 +135,31 @@ async def run_blockchain_scanner(slot_window: int = DEFAULT_SLOT_WINDOW) -> None
 
         if discovered_transactions:
             save_transactions_to_file(discovered_transactions)
+
+            # Run sandwich detection
+            print("\n" + "=" * 70)
+            print("Running Wide Sandwich Detection")
+            print("=" * 70)
+
+            try:
+                sandwich_detect.run_detection(
+                    transactions_file=OUTPUT_FILENAME,
+                    output_file="sandwich_attacks.json",
+                )
+            except Exception as e:
+                print(f"Error during sandwich detection: {e}")
+            else:
+                print("\n" + "=" * 70)
+                print("Running SOL Profit Analysis")
+                print("=" * 70)
+                try:
+                    profit_analysis.run_profit_analysis(
+                        Path("sandwich_attacks.json"),
+                        Path("profit_analysis.json"),
+                        Path("pnl_report_per_bot.json"),
+                    )
+                except Exception as e:
+                    print(f"Error during profit analysis: {e}")
 
         print("\n" + "=" * 70)
         print("Scan complete")

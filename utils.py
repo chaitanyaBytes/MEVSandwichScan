@@ -21,13 +21,7 @@ KNOWN_DEX_PROGRAMS = {
     ORCA_PROGRAM_ID: "Orca Whirlpools",
 }
 
-KNOWN_ROUTER_PROGRAMS = {
-    JUPITER_V6_PROGRAM_ID: "Jupiter V6",
-    JUPITER_V4_PROGRAM_ID: "Jupiter V4",
-    METEORA_DLMM_PROGRAM_ID: "Meteora DLMM",
-}
-
-ALL_SWAP_PROGRAMS = {**KNOWN_DEX_PROGRAMS, **KNOWN_ROUTER_PROGRAMS}
+ALL_SWAP_PROGRAMS = KNOWN_DEX_PROGRAMS
 
 
 def is_swap_by_logs(log_messages: List[str]) -> bool:
@@ -77,19 +71,7 @@ def identify_dex_program(transaction) -> tuple[bool, Optional[str]]:
                 continue
             program_id = str(instruction.program_id)
             if program_id in ALL_SWAP_PROGRAMS:
-                if is_swap_by_logs(log_messages):
-                    return True, ALL_SWAP_PROGRAMS[program_id]
-
-        inner_instructions = getattr(meta, "inner_instructions", []) or []
-        for ix_group in inner_instructions:
-            if hasattr(ix_group, "instructions"):
-                for ix in ix_group.instructions:
-                    if hasattr(ix, "program_id"):
-                        program_id = str(ix.program_id)
-                        if program_id in ALL_SWAP_PROGRAMS:
-                            # Verify it's a swap via logs
-                            if is_swap_by_logs(log_messages):
-                                return True, ALL_SWAP_PROGRAMS[program_id]
+                return True, ALL_SWAP_PROGRAMS[program_id]
 
         return False, None
 
@@ -234,12 +216,12 @@ def calculate_token_balance_changes(
             owner = balances.get("owner")
             account = balances.get("account")
 
-            is_relevant = False
+            is_relevant = True
             if owner:
                 if owner == signer_address:
                     is_relevant = True
-                elif first_writable and owner == first_writable:
-                    is_relevant = True
+            elif first_writable and owner == first_writable:
+                is_relevant = True
 
             if is_relevant and abs(balance_change) > MINIMUM_BALANCE_CHANGE:
                 relevant_changes.append(
@@ -445,8 +427,7 @@ async def parse_blocks_for_txns(
     all_discovered_transactions = []
     blocks_successfully_processed = 0
 
-    for slot_offset in range(slot_window):
-        target_slot = current_slot - slot_offset
+    for target_slot in range(current_slot, current_slot - slot_window, -1):
 
         try:
             block_transactions = await process_single_block(
