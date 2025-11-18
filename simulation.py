@@ -119,7 +119,6 @@ def run_simulation(
 
 
 def print_simulation_summary(result: dict, pool: PoolState) -> None:
-    """Print a beautiful formatted summary of the simulation."""
     print("\n" + "=" * 70)
     print("WIDE SANDWICH ATTACK SIMULATION")
     print("=" * 70)

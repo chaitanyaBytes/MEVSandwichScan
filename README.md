@@ -29,7 +29,7 @@ MEVSandwichScan/
 │   ├── profit_analysis.json
 │   ├── pnl_report_per_bot.json
 │   └── simulation.json
-└── requiremnts.txt     # Python dependencies
+└── requirements.txt    # Python dependencies
 ```
 
 ## Installation
@@ -44,7 +44,7 @@ MEVSandwichScan/
 2. **Install dependencies**
 
    ```bash
-   pip install -r requiremnts.txt
+   pip install -r requirements.txt
    ```
 
    Or manually:
