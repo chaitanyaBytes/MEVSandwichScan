@@ -1,32 +1,32 @@
 {
   "Gwwnuytsvw7DC1Wea2QF5TMSS9Az81zDfUN1YwtiDLRx": {
     "bot": "Gwwnuytsvw7DC1Wea2QF5TMSS9Az81zDfUN1YwtiDLRx",
-    "sandwich_count": 14,
-    "profit_usd": 1063.2322966689576,
-    "profit_sol": 7.531412671686251
+    "sandwich_count": 28,
+    "profit_usd": 8633.656809989727,
+    "profit_sol": 61.196076931727134
   },
-  "AE861PyrYJXm2TuxiMc8Ecwo4YYgAHfcYum3GWpSRFe3": {
-    "bot": "AE861PyrYJXm2TuxiMc8Ecwo4YYgAHfcYum3GWpSRFe3",
-    "sandwich_count": 7,
-    "profit_usd": 61.60130607954646,
-    "profit_sol": 0.4363532396950591
+  "ATQs6A92eUzdxTBsQhRJxxJDpgYDTGvLnU4e5mMEfY3k": {
+    "bot": "ATQs6A92eUzdxTBsQhRJxxJDpgYDTGvLnU4e5mMEfY3k",
+    "sandwich_count": 3,
+    "profit_usd": 566.3726892342611,
+    "profit_sol": 4.014496687232842
   },
-  "Bj1R5CBrhdD8Wn7irvnAFfkwHJsVENscBkhaJ14jveZo": {
-    "bot": "Bj1R5CBrhdD8Wn7irvnAFfkwHJsVENscBkhaJ14jveZo",
-    "sandwich_count": 1,
-    "profit_usd": 30.596508963890425,
-    "profit_sol": 0.2167305639999313
+  "BijofPtrG5AAvmb74KqWBvmfk9jYTtiHJJrhYrWnvodF": {
+    "bot": "BijofPtrG5AAvmb74KqWBvmfk9jYTtiHJJrhYrWnvodF",
+    "sandwich_count": 3,
+    "profit_usd": 280.0969061380987,
+    "profit_sol": 1.9853501469426875
   },
-  "4SqKdf3VSH1SHTckCFLp45HgGK3XRxTn1EzuUTzrFzwr": {
-    "bot": "4SqKdf3VSH1SHTckCFLp45HgGK3XRxTn1EzuUTzrFzwr",
-    "sandwich_count": 1,
-    "profit_usd": 4.708604550911328,
-    "profit_sol": 0.033353430000005346
+  "FrSbj9hGbMB6BLM6XMvRngECqt8xNxzPmXScDUnHH7L3": {
+    "bot": "FrSbj9hGbMB6BLM6XMvRngECqt8xNxzPmXScDUnHH7L3",
+    "sandwich_count": 2,
+    "profit_usd": 178.69870658381873,
+    "profit_sol": 1.2666312822453403
   },
-  "AaaA2FSj1FyMEPhdpoF7PJrjsovB6yVv7YZFLn6MSiEQ": {
-    "bot": "AaaA2FSj1FyMEPhdpoF7PJrjsovB6yVv7YZFLn6MSiEQ",
-    "sandwich_count": 7,
-    "profit_usd": 2.840017094059036,
-    "profit_sol": 0.0201172789775228
+  "EQGEmqCuobe4MyVn7DfCAmx9Kaa5oKt6yUS2DznSb5EV": {
+    "bot": "EQGEmqCuobe4MyVn7DfCAmx9Kaa5oKt6yUS2DznSb5EV",
+    "sandwich_count": 2,
+    "profit_usd": 129.85618466900578,
+    "profit_sol": 0.9204314280676739
   }
 }

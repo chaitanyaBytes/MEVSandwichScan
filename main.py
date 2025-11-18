@@ -19,7 +19,7 @@ import utils
 import profit_analysis
 
 
-DEFAULT_SLOT_WINDOW = 10
+DEFAULT_SLOT_WINDOW = 300
 RESULTS_DIR = Path("results")
 RESULTS_DIR.mkdir(exist_ok=True)
 OUTPUT_FILENAME = RESULTS_DIR / "transactions.json"

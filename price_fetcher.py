@@ -36,7 +36,6 @@ def fetch_prices_usd(mints: List[str]) -> Dict[str, float]:
         data = resp.json()
         for mint, obj in data.items():
             price = obj.get("priceUsd") or obj.get("usdPrice") or obj.get("price")
-            print(f"Price for {mint}: {price}")
             if price is None:
                 continue
             try:
